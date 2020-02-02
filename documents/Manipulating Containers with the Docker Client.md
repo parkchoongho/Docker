@@ -123,3 +123,47 @@ e7445dc569a4        hello-world         "/hello"            10 hours ago        
 dd3262f622cb        hello-world         "/hello"            10 hours ago        Exited (0) 10 hours ago                         infallible_swirles
 ```
 
+### Container LifeCycle
+
+`docker run`  `docker create` 명령어와 `docker start` 명령어를 모두 실행하는 명령어입니다. `docker create <image name>` `docker start <container id>` 이렇게 구성됩니다. create 명령어는 해당 image의 File System의 snapshot을 가져와 container에 setting하는 것까지를 의미합니다. start 명령어는 해당 startup command 또는 인자로 넘긴 command를 실행해 container를 돌리는 것을 의미합니다.
+
+```powershell
+$ docker create hello-world
+e794f746892482b3190d40a55d2248a96fb85be4ae813e04da10a0e510f476c4
+```
+
+docker start 명령어는 start와 container id 사이에 -a를 입력해야 합니다.
+
+```powershell
+$ docker start -a e794f746892482b3190d40a55d2248a96fb85be4ae813e04da10a0e510f476c4
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+```
+
+입력을 하지 않으면 아래와 같이 container id만 콘솔창에 찍혀서 나타납니다.
+
+```powershell
+$ docker start e794f746892482b3190d40a55d2248a96fb85be4ae813e04da10a0e510f476c4
+e794f746892482b3190d40a55d2248a96fb85be4ae813e04da10a0e510f476c4
+```
+
+`-a` 명령어는 docker가 container 실행시, 실제 ouput이 보여지게끔 하는 역할을 합니다.
