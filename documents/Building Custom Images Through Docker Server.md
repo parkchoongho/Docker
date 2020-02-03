@@ -70,3 +70,19 @@ $ docker run 6d55f8f84d10
 ```
 
 자세한 내용은 다음 topic에서 설명하도록 하겠습니다.
+
+### Dockerfile Teardown
+
+```dockerfile
+# Use an existing docker image as a base
+FROM alpine
+
+# Download and install a dependency
+RUN apk add --update redis
+
+# Tell the image what to do when it starts
+# as a container
+CMD ["redis-server"]
+```
+
+Dockfile을 보면 코드가 특정 규칙을 따른다는 것을 확인할 수 있습니다. 맨처음에 보이는 FROM이나 RUN은 docker server가 dockerfile로 image를 생성할 때 해야할 행동을 알려주는 지침이라고 할 수 있습니다. FROM의 경우 alpine을 base image로 사용하라는 의미겠죠. 그 뒤에 오는 `apk add --update redis` 의 경우에는 지침에 전달하는 argument로 보시면 됩니다. 그러면 그 다음부터 더 자세하게 dockerfile에 대해 알아가 보도록 하겠습니다.
