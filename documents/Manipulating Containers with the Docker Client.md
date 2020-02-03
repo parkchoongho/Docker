@@ -167,3 +167,54 @@ e794f746892482b3190d40a55d2248a96fb85be4ae813e04da10a0e510f476c4
 ```
 
 `-a` 명령어는 docker가 container 실행시, 실제 ouput이 보여지게끔 하는 역할을 합니다.
+
+그리고 docker create 단계에서 생성된 override command는 후에 변경할 수 없습니다.
+
+### Removing Stopped Containers
+
+사용되지 않은 container를 삭제하는 법을 배워보겠습니다.
+
+```bash
+$ docker system prune
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all dangling images
+  - all dangling build cache
+
+Are you sure you want to continue? [y/N] y
+Deleted Containers:
+04b6b26c2f6bef9bad216c86f90047b66c98736d99f788d6ae19b42452a91852
+6e2c8a58baca24faa403e37eb7b5e79e955d2c3014fb94fef226ec449bfd9e8f
+0c4651f33c1ce263f1a509ce68db0e7b8525bac2fe772ed38a21fed102c7a8a4
+7422435a21244a08a759b681c804ff4c903e0d41d1e6c302a2ebbf1d022e398a
+130073d5d1d9fbe361000811d68d12b3af7d17ac72d733756b30b3541d2ded8b
+e794f746892482b3190d40a55d2248a96fb85be4ae813e04da10a0e510f476c4
+211eca35b4e050a4b9b1d1d32642293d271c0726d66a11aa080e2f74bc3989e8
+2a234b85c6bbf4f94a94f94e6982283e3358c479054384016938377a7fbee522
+9a5099360afc187e79438f4b03a2af12a95f225b25a361b8cf7e4fcda0c8f085
+47d736b6557c66e99694126525423eb291b400f8c94ada61ffbd53262550579e
+5af4e1eff1e9de5eaa668b3ab5ac955a2218e2355b461a2e43c14a493524cde0
+484156be787010885065dccec1298a43ef55c50a309a098e7e812c9badd9f68f
+c79f7e8f1ba6de2a65a6fb84f6ea81225908411a5ec832bf77849deebc357d6b
+38952aff63b8db8c8c25594c12f818bb8dbdd7ebde40585d91feb5e0465c75db
+924da3db57920bde0e1ca062d61315e1086477430ac1177a98fe23bb4cc98daf
+e83feb2b6f2c6d516db46fd9f31a24e17dc37144ae0abda0b74dfbed4ae2cf75
+a48a2a871eb37309a4c48505bf367d25f75a24fb23830df4bb2c37924b2a262b
+c89d8d4bb86634b243c0c88c3dad0607aad241422dfbaab772a5366eb477362f
+749a70e8c8c9835d559f5ea9be70beff78ccb7087c21e59469bfd07d652a52fa
+5d6bcb0bd0c4989ea16b22474a53694119a5ad400832f310149593baccb0c35d
+9e378ea4b2872194e2d5b0ecdf41c42d14df7e8ef13d471a1989b697e8b85cf3
+e7445dc569a4a12b26a99b76d8c16b7be9fee3d6d026dcc8f657fc106bebabe4
+dd3262f622cb672553ff28111d144d398f956fdd4ade92624c190a7a9d254c36
+
+Total reclaimed space: 0B
+```
+
+`docker system prune` 명령어를 치면 이렇게 멈춰있는 container들을 삭제합니다. (cache에 있는 image들도 삭제하기에 다음번에 `docker run hello-world` 명령어를 치면 docker hub로부터 image를 다운받게됩니다.)
+
+```bash
+$ docker ps --all
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
+
