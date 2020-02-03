@@ -86,3 +86,20 @@ CMD ["redis-server"]
 ```
 
 Dockfile을 보면 코드가 특정 규칙을 따른다는 것을 확인할 수 있습니다. 맨처음에 보이는 FROM이나 RUN은 docker server가 dockerfile로 image를 생성할 때 해야할 행동을 알려주는 지침이라고 할 수 있습니다. FROM의 경우 alpine을 base image로 사용하라는 의미겠죠. 그 뒤에 오는 `apk add --update redis` 의 경우에는 지침에 전달하는 argument로 보시면 됩니다. 그러면 그 다음부터 더 자세하게 dockerfile에 대해 알아가 보도록 하겠습니다.
+
+### What's a Base Image?
+
+Dockerfile을 작성하는 것은 예를 들어, OS가 설치가 안된 컴퓨터에 Chrome을 설치하라는 것과 같은 맥락입니다.
+
+How do you install Chrome on a computer with no operating system?
+
+|      Install an operating system - Specify a base image      |
+| :----------------------------------------------------------: |
+| **Start up your default browser** - Run commands to install additional programs |
+| **Navigate to chrome.google.com** - Run commands to install additional programs |
+| **Download installer** - Run commands to install additional programs |
+| **Open file/folder explorer **- Run commands to install additional programs |
+| **Execute chrome_installer.exe** - Run commands to install additional programs |
+|      **Execute chrome.exe** - Command to run on startup      |
+
+base image는 os를 install하는 것과 매우 흡사합니다. 우리가 필요에 따라 Windows, Mac, Linux와 같은 os를 가져가 사용하듯이 redis image를 만드는데 있어 필요한 base image가 alpine이므로 alpine을 base image로 사용하는 것입니다. 
