@@ -332,7 +332,7 @@ $
 
 `-it` (IT Flag)에 대해 좀 더 깊이 알아보겠습니다. 그러기 위해서 linux에서 돌아가는 프로세스들에 대한 설명을 조금 해야합니다. linux 환경안에서 작동하는 프로세스들은 세개의 communication channel을 가지게 됩니다. 이를 STDIN, STDOUT, STDERR이라 합니다. 이름에서 알 수 있듯이 STDIN은 들어오는 정보와 STDOUT은 나가는 정보, STDERR는 프로세스안에서 발생하는 에러와 커뮤니케이션한다고 생각하시면 됩니다.
 
-사실 `-it` 는 `-i` 와 `-t` 를 합친 것입니다. `-i`는 지금 입력하는 command의 STDIN을 현재 terminal과 연결하고 싶다는 뜻입니다. `-t`는 입력값과 출력값을 조금 더 정돈되게 보여지는 역할을 합니다. (사실 이보다 더 많은 역할을 하나 결론적으로는 그렇습니다.)
+사실 `-it` 는 `-i` 와 `-t` 를 합친 것입니다. `-i`는 지금 입력하는 command의 STDIN을 현재 terminal 입력과 연결하고 싶다는 뜻입니다. `-t`는 입력값과 출력값을 조금 더 정돈되게 보여지는 역할을 합니다. (사실 이보다 더 많은 역할을 하나 결론적으로는 그렇습니다.)
 
 ```bash
 $ docker exec -i 7220e89b7bbd redis-cli
@@ -345,4 +345,20 @@ $ docker exec -it 7220e89b7bbd redis-cli
 127.0.0.1:6379> get myvalue
 "5"
 ```
+
+### Getting a Command Prompt in a Container
+
+`docker exec -it` 명령어를 통해 container에 입력을 할 수 있다는 것을 알게되었습니다. 그런데 매번 container에 입력을 하기 위해 `docker exec -it` 를 칠 수 없는 노릇입니다. `docker exec -it <container id> sh` 를 통해 해당 container의 terminal에 접근할 수 있습니다.
+
+```bash
+$ docker exec -it 7220e89b7bbd sh
+# redis-cli
+127.0.0.1:6379> get myvalue
+"5"
+127.0.0.1:6379> 
+# ^C
+# 
+```
+
+`sh` 는 command processor입니다. (powershell이나 bash와 같은 입력프로그램이라 생각하시면 됩니다.) 따라서 `docker exec -it <container id> sh` 는 container안에서 sh를 실행하는 명령어가 되는 것입니다. 보통 컨테이너들은 내부적으로 sh을 가지고 있습니다. (종종 bash나 다른 processor를 가지고 있는 container도 물론 있습니다.)
 
