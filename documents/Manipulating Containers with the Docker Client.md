@@ -270,3 +270,61 @@ $ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
 
+### Multi-Command Containers
+
+redis라는 image를 docker hub로 부터 받아와 실행해보도록 하겠습니다.
+
+```bash
+$ docker run redis
+Unable to find image 'redis:latest' locally
+latest: Pulling from library/redis
+bc51dd8edc1b: Pull complete 
+37d80eb324ee: Pull complete 
+392b7748dfaf: Pull complete 
+48df82c3534d: Pull complete 
+2ec2bb0b4b0e: Pull complete 
+1302bce0b2cb: Pull complete 
+Digest: sha256:7b84b346c01e5a8d204a5bb30d4521bcc3a8535bbf90c660b8595fad248eae82
+Status: Downloaded newer image for redis:latest
+1:C 03 Feb 2020 04:25:52.593 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+1:C 03 Feb 2020 04:25:52.594 # Redis version=5.0.7, bits=64, commit=00000000, modified=0, pid=1, just started
+1:C 03 Feb 2020 04:25:52.595 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+1:M 03 Feb 2020 04:25:52.602 * Running mode=standalone, port=6379.
+1:M 03 Feb 2020 04:25:52.602 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+1:M 03 Feb 2020 04:25:52.602 # Server initialized
+1:M 03 Feb 2020 04:25:52.602 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+1:M 03 Feb 2020 04:25:52.602 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+1:M 03 Feb 2020 04:25:52.602 * Ready to accept connections
+```
+
+그러면 이러한 명령어가 나타납니다. redis server가 돌고 있는 상태이므로 터미널을 하나 더 열어 redis-cli를 실행해보도록 하겠습니다.
+
+```bash
+$ redis-cli
+
+Command 'redis-cli' not found, but can be installed with:
+
+sudo apt install redis-tools
+```
+
+하지만 위 처럼 `redis-cli` 명령어를 찾지 못하게 됩니다. 왜냐하면 현재 redis server는 특정 container안에서 돌고 있으므로 만약 `redis-cli` 명령어를 실행하고 싶다면 그 명령어를 해당 container로 전달해주어야하기 때문입니다.
+
+이런경우 사용하는 것이 `docekr exec -it <container id> <command>` 명령어입니다. `-it` 는 해당 container에 입력값을 넣을 권한을 부여하는 명령어입니다. 
+
+```bash
+$ docker exec -it 7220e89b7bbd redis-cli
+127.0.0.1:6379> set myvalue 5
+OK
+127.0.0.1:6379> get myvalue
+"5"
+```
+
+이렇게 해당 container안에서 redis-cli 를 실행할 수 있게 되었습니다.
+
+`-it` 를 빼고 입력하면 redis-cli를 실행하지 못하고 다시 terminal 창으로 돌아오게됩니다.
+
+```bash
+$ docker exec 7220e89b7bbd redis-cli
+$ 
+```
+
