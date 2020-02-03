@@ -237,3 +237,36 @@ $ docker logs 0f9515696d5e6599e9744c8cac6b30c01033279979e9788a9a6f4217a5ce058c
 hi there
 ```
 
+### Stopping Containers
+
+지금까지는 container들이 자동으로 종료되거나 실행되고 있는 프로세스를 Ctrl + C 를 통해 종료시켰습니다. 이번에는 docker 명령어를 통해 이 작업을 해보도록 하겠습니다.
+
+```bash
+$ docker create busybox ping google.com
+1d55cb8341b965d8b516b8a875016bba28d17e07aceafd8df794bfc9f9372770
+$ docker logs 1d55cb8341b965d8b516b8a875016bba28d17e07aceafd8df794bfc9f9372770
+$ docker start 1d55cb8341b965d8b516b8a875016bba28d17e07aceafd8df794bfc9f9372770
+1d55cb8341b965d8b516b8a875016bba28d17e07aceafd8df794bfc9f9372770
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+1d55cb8341b9        busybox             "ping google.com"   7 minutes ago       Up 16 seconds                           awesome_babbage
+$ docker stop 1d55cb8341b9
+1d55cb8341b9
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
+
+`docker stop` 명령어를 치고 한동안 기다려야하는데 container에서 해당 명령어를 이해하지 못했기 때문입니다. docker stop은 container안에서 자체 종료되는 process로 유도하는 종료방법입니다. sigterm message를 전송해 container가 종료되도록 합니다. 하지만 ping명령어는 이를 이해하지 못하고 계속해서 돌고 싶어합니다. 이렇게 10초동안 container가 종료되지 않고 계속 돌아간다면 docker는 sigkill을 전송하고 강제로 container를 종료시켜버립니다. docker kill 명령어는 처음부터 sigkill을 container에 전송합니다.
+
+```bash
+$ docker start 1d55cb8341b9
+1d55cb8341b9
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+1d55cb8341b9        busybox             "ping google.com"   9 minutes ago       Up 10 seconds                           awesome_babbage
+$ docker kill 1d55cb8341b9  
+1d55cb8341b9
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
+
