@@ -328,3 +328,21 @@ $ docker exec 7220e89b7bbd redis-cli
 $ 
 ```
 
+### The Purpose of the IT Flag
+
+`-it` (IT Flag)에 대해 좀 더 깊이 알아보겠습니다. 그러기 위해서 linux에서 돌아가는 프로세스들에 대한 설명을 조금 해야합니다. linux 환경안에서 작동하는 프로세스들은 세개의 communication channel을 가지게 됩니다. 이를 STDIN, STDOUT, STDERR이라 합니다. 이름에서 알 수 있듯이 STDIN은 들어오는 정보와 STDOUT은 나가는 정보, STDERR는 프로세스안에서 발생하는 에러와 커뮤니케이션한다고 생각하시면 됩니다.
+
+사실 `-it` 는 `-i` 와 `-t` 를 합친 것입니다. `-i`는 지금 입력하는 command의 STDIN을 현재 terminal과 연결하고 싶다는 뜻입니다. `-t`는 입력값과 출력값을 조금 더 정돈되게 보여지는 역할을 합니다. (사실 이보다 더 많은 역할을 하나 결론적으로는 그렇습니다.)
+
+```bash
+$ docker exec -i 7220e89b7bbd redis-cli
+get myvalue
+5
+```
+
+```bash
+$ docker exec -it 7220e89b7bbd redis-cli
+127.0.0.1:6379> get myvalue
+"5"
+```
+
