@@ -218,3 +218,22 @@ $ docker ps --all
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
 
+### Retrieving Log Outputs
+
+컨테이너를 실행하는 작업이 매우 오래걸린다고 가정해봅시다. 실수로 `-a` 를 빼먹고 `docker start` 를 실행했다고 하면 다시 한번 컨테이너를 실행해야 할것입니다. 그러면 시간이 2배이상 들게됩니다.  이런경우 그전에 실행한 container의 결과가 어떤 것인지 그 log를 확인할 수 있으면 좋을 것 같습니다. 그것이 바로 `docker logs` 명령어입니다.
+
+```bash
+$ docker create busybox echo hi there
+0f9515696d5e6599e9744c8cac6b30c01033279979e9788a9a6f4217a5ce058c
+```
+
+```bash
+$ docker start 0f9515696d5e6599e9744c8cac6b30c01033279979e9788a9a6f4217a5ce058c
+0f9515696d5e6599e9744c8cac6b30c01033279979e9788a9a6f4217a5ce058c
+```
+
+```bash
+$ docker logs 0f9515696d5e6599e9744c8cac6b30c01033279979e9788a9a6f4217a5ce058c
+hi there
+```
+
